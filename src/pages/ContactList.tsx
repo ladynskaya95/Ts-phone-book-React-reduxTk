@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react'
-import { Avatar, List, Typography, Button } from "antd";
+import { Input, Avatar, List, Typography, Button } from "antd";
 import { Endpoints, CONTACTLIST_URL } from "../../src/shared/constants";
 import "./ContactList.css"
 
 const { Title } = Typography;
+const { Search } = Input;
 
 type ContactItem = {
   id: string,
   name: string,
   phone: string
 }
+
+const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => console.log(event.target.value);
 
 export const ContactList = () => {
 const [contactList, setContactList] = useState<ContactItem[]>([])
@@ -20,6 +23,8 @@ const [contactList, setContactList] = useState<ContactItem[]>([])
   }, [])
   return (
     <div className="contactList">
+      <Search placeholder="Знайти контакти" className="contactSearch"  enterButton
+      onChange={handleChange} />
       <Title>Список контактів</Title>
       <List
         bordered
@@ -40,10 +45,9 @@ const [contactList, setContactList] = useState<ContactItem[]>([])
           </List.Item>
         )}
       />
-      <Button
-      className="add-btn"
-        type="primary"
-      >Додати новий контакт</Button>
+      <Button className="add-btn" type="primary">
+        Додати новий контакт
+      </Button>
     </div>
   );
 }

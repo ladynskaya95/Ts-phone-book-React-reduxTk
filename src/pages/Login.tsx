@@ -22,7 +22,7 @@ type Props = {
   setIsLoggedIn: (value: boolean) => void
 }
 
- export const Login = ({ setIsLoggedIn }: { setIsLoggedIn : Props}) => {
+ export const Login = ({ setIsLoggedIn }: Props) => {
    const [error, setError] = useState("");
    const [isLoading, setIsLoading] = useState(false);
 
