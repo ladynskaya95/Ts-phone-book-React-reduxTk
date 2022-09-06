@@ -4,6 +4,8 @@ import { Endpoints, CONTACTS_URL } from "../../src/shared/constants";
 import "./Login.css"
 import  { useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../store/hooks';
+import { logIn } from '../store/slices/auth/authSlice';
 
 type LoginValues = {
     userName: string
@@ -18,15 +20,14 @@ type UserItem = {
   phone: string, 
 }
 
-type Props = {
-  setIsLoggedIn: (value: boolean) => void
-}
 
- export const Login = ({ setIsLoggedIn }: Props) => {
+
+ export const Login = () => {
    const [error, setError] = useState("");
    const [isLoading, setIsLoading] = useState(false);
 
    const navigate = useNavigate()
+   const dispatch = useAppDispatch()
 
    const onFinish = async ({ userName }: LoginValues) => {
      setIsLoading(true);
@@ -40,7 +41,7 @@ type Props = {
        setError("Такого користувача не існує");
      } else {
        setError("");
-       setIsLoggedIn(true);
+       dispatch(logIn)
        navigate(Endpoints.Contacts)
      }
      setIsLoading(false);
