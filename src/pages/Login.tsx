@@ -41,7 +41,7 @@ type UserItem = {
        setError("Такого користувача не існує");
      } else {
        setError("");
-       dispatch(logIn)
+       dispatch(logIn())
        navigate(Endpoints.Contacts)
      }
      setIsLoading(false);
