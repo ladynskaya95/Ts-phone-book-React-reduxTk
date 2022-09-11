@@ -2,10 +2,16 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Alert, Button, Form, Input, Typography } from "antd";
 import { Endpoints, CONTACTS_URL } from "../../src/shared/constants";
 import "./Login.css"
-import  { useState} from 'react';
+
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { logIn } from '../store/slices/auth/authSlice';
+import { fetchUsers } from '../store/slices/user/userSlice';
+import {
+  selectUserError,
+  selectUserStatus
+} from "../store/slices/user/userSlice";
+
 
 type LoginValues = {
     userName: string
@@ -20,31 +26,24 @@ type UserItem = {
   phone: string, 
 }
 
-
-
  export const Login = () => {
-   const [error, setError] = useState("");
-   const [isLoading, setIsLoading] = useState(false);
+    const status = useAppSelector(selectUserStatus);
+    const error = useAppSelector(selectUserError);
 
    const navigate = useNavigate()
    const dispatch = useAppDispatch()
 
    const onFinish = async ({ userName }: LoginValues) => {
-     setIsLoading(true);
+     try{
+        const isUserFound = await dispatch(fetchUsers(userName)).unwrap();
 
-     const response = await fetch(CONTACTS_URL);
-     const userList: UserItem[] = await response.json();
-     const foundUser = userList.find((user) => user.username === userName);
-     console.log(userList);
-
-     if (!foundUser) {
-       setError("Такого користувача не існує");
-     } else {
-       setError("");
-       dispatch(logIn())
-       navigate(Endpoints.Contacts)
+        if (isUserFound) {
+          dispatch(logIn());
+          navigate(Endpoints.Contacts)
+        }
+     } catch (err) {
+        console.log(err)
      }
-     setIsLoading(false);
    };
 
    return (
@@ -78,7 +77,7 @@ type UserItem = {
 
        <Form.Item>
          <Button
-           loading={isLoading}
+           loading={status === "loading"}
            type="primary"
            htmlType="submit"
            className="login-form-button"
