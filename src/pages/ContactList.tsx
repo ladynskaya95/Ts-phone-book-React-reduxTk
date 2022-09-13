@@ -1,26 +1,24 @@
-import { useEffect, useState } from 'react'
+import { useEffect} from 'react'
 import { Input, Avatar, List, Typography, Button } from "antd";
-import { Endpoints, CONTACTLIST_URL } from "../../src/shared/constants";
+
 import "./ContactList.css"
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { fetchContacts, selectContactList } from '../store/slices/contact/contactSlice';
 
 const { Title } = Typography;
 const { Search } = Input;
 
-type ContactItem = {
-  id: string,
-  name: string,
-  phone: string
-}
-
-const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => console.log(event.target.value);
-
 export const ContactList = () => {
-const [contactList, setContactList] = useState<ContactItem[]>([])
+  const contactList = useAppSelector(selectContactList)
+  const dispatch = useAppDispatch();
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    console.log(event.target.value);
+
   useEffect(() => {
-    fetch(CONTACTLIST_URL)
-    .then(res=> res.json())
-    .then(res=> setContactList(res))
-  }, [])
+    dispatch(fetchContacts())
+  }, [dispatch])
+
   return (
     <div className="contactList">
       <Search placeholder="Знайти контакти" className="contactSearch"  enterButton

@@ -19,12 +19,13 @@ type LoginValues = {
 
 const { Title } = Typography;
 
-type UserItem = {
-  id: string,
-  username: string,
-  email: string,
-  phone: string, 
-}
+export type UserItem = {
+  name: string;
+  username: string;
+  email: string;
+  avatar: string;
+  id: string;
+};
 
  export const Login = () => {
     const status = useAppSelector(selectUserStatus);
