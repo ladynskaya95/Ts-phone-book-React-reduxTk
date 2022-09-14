@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Header } from "./components/Header/Header";
-import { ContactList } from "./pages/ContactList";
+import { ContactList } from "./pages/Contacts/ContactList";
 import { Login } from "./pages/Login";
 import { Endpoints } from "./shared/constants";
 import { useAppSelector } from "./store/hooks";
